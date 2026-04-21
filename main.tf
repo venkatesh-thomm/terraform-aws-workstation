@@ -1,7 +1,9 @@
 resource "aws_instance" "workstation" {
-  ami           = local.ami_id
-  instance_type = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.workstation.id]
+  ami                         = local.ami_id
+  instance_type               = "t3.micro"
+  subnet_id                   = data.aws_subnet.public.id
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.workstation.id]
   user_data = templatefile("workstation.sh", {
     aws_access_key = var.aws_access_key
     aws_secret_key = var.aws_secret_key
@@ -13,15 +15,15 @@ resource "aws_instance" "workstation" {
     # EBS volume tags
     tags = merge(
       {
-          Name = "${var.project}-${var.environment}-workstation"
+        Name = "${var.project}-${var.environment}-workstation"
       },
-    local.common_tags
+      local.common_tags
     )
   }
 
   tags = merge(
     {
-        Name = "${var.project}-${var.environment}-workstation"
+      Name = "${var.project}-${var.environment}-workstation"
     },
     local.common_tags
   )

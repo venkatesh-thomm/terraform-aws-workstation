@@ -1,6 +1,6 @@
 data "aws_ami" "joindevops" {
-  most_recent      = true
-  owners           = ["973714476881"]
+  most_recent = true
+  owners      = ["973714476881"]
 
   filter {
     name   = "name"
@@ -16,4 +16,8 @@ data "aws_ami" "joindevops" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+}
+
+data "aws_subnet" "public" {
+  id = "subnet-0ad3a786fedff2a06"
 }
