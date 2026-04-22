@@ -13,10 +13,11 @@ systemctl enable docker
 usermod -aG docker ec2-user
 
 # eksctl
-PLATFORM=Linux_amd64
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
 
-curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$${PLATFORM}.tar.gz"
-tar -xzf eksctl_$${PLATFORM}.tar.gz -C /tmp && rm eksctl_$${PLATFORM}.tar.gz
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
 
 # kubectl
@@ -32,6 +33,11 @@ chmod +x /usr/local/bin/kubens
 curl -sLO "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz"
 tar -xzf k9s_Linux_amd64.tar.gz -C /tmp && rm k9s_Linux_amd64.tar.gz
 sudo install -m 0755 /tmp/k9s /usr/local/bin && rm /tmp/k9s
+
+# helm3
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
 
 # AWS CLI configure for ec2-user
 mkdir -p /home/ec2-user/.aws
